@@ -8,7 +8,7 @@ type stateType = {
 }
 
 const initialState: stateType = { 
-    color: {R: 0, G: 0, B: 0 }, 
+    color: {R: 128, G: 128, B: 128 }, 
     changeColor: (color: colorType) => { console.log(color); }
 }
 
@@ -16,14 +16,10 @@ const initialState: stateType = {
 export const ColorSlidersContext = React.createContext(initialState);
 
 
-interface IColorSliderProvider {
-    children: React.ReactNode;
-}
-
 type ActionType = (
     {type: "SET_COLOR", value: colorType } |
-    {type: "SET_COLOR_VALUE", value: number, colorValue: "R" | "G" | "B"}
-
+    {type: "SET_COLOR_VALUE", value: number, colorValue: "R" | "G" | "B"} |
+    {type: "RESET_COLOR"}
 )
 
 function reducer(state: colorType, action: ActionType) {
@@ -34,7 +30,10 @@ function reducer(state: colorType, action: ActionType) {
         case "SET_COLOR_VALUE":
             if (action.colorValue == "R") { state.R = action.value}
             else if (action.colorValue == "B") { state.B = action.value}
-            else state.B = action.value
+            else state.B = action.value;
+            return state;
+        case "RESET_COLOR":
+            state = initialState.color;
             return state;
         default:
             return state;
@@ -43,8 +42,8 @@ function reducer(state: colorType, action: ActionType) {
 
 
 
-export const ColorSliderContextProvider: React.FC<IColorSliderProvider> = ({ children }) => {
-    const [color, dispatch] = React.useReducer<React.Reducer<colorType, ActionType>>(reducer, {R: 0, G: 0, B: 0 });
+export const ColorSliderContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+    const [color, dispatch] = React.useReducer<React.Reducer<colorType, ActionType>>(reducer, initialState.color);
 
     const changeColor = (color: colorType) => {
         dispatch({type: "SET_COLOR", value: color});
