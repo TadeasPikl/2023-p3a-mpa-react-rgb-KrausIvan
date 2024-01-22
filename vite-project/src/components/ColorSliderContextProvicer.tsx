@@ -4,12 +4,14 @@ type colorType = { R: number, G: number, B: number }
 
 type stateType = { 
     color: colorType
-    changeColor: (color: colorType) => void
+    changeColor: (color: colorType) => void,
+    resetColor: () => void
 }
 
 const initialState: stateType = { 
     color: {R: 128, G: 128, B: 128 }, 
-    changeColor: (color: colorType) => { console.log(color); }
+    changeColor: (color: colorType) => { console.log(color); },
+    resetColor: () => {console.log(":)")}
 }
 
 
@@ -48,9 +50,12 @@ export const ColorSliderContextProvider: React.FC<React.PropsWithChildren> = ({ 
     const changeColor = (color: colorType) => {
         dispatch({type: "SET_COLOR", value: color});
     }
+    const resetColor = () => {
+        dispatch({type: "RESET_COLOR"});
+    }
 
     return (
-        <ColorSlidersContext.Provider value={{ color, changeColor }}>
+        <ColorSlidersContext.Provider value={{ color, changeColor, resetColor }}>
             {children}
         </ColorSlidersContext.Provider>
     )

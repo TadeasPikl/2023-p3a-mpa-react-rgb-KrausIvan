@@ -7,10 +7,11 @@ import styles  from "./ColorSliders.module.css";
 interface useContextType {
     color: { R: number, G: number, B: number };
     changeColor: (color: { R: number, G: number, B: number }) => void;
+    resetColor: () => void;
 }
 
 export const ColorSliders:React.FC = () => {
-    const { color, changeColor } = useContext<useContextType>(ColorSlidersContext);
+    const { color, changeColor, resetColor } = useContext<useContextType>(ColorSlidersContext);
 
     return (
       <div className={styles["container"]}>
@@ -52,6 +53,8 @@ export const ColorSliders:React.FC = () => {
                 `rgb(0, 0, ${color.B})`
             }
             />
+
+            <button onClick={resetColor}>RESET</button>
       </div>
     );
     
